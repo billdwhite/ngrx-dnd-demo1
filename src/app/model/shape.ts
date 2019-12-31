@@ -10,16 +10,28 @@ export class Shape {
     public foregroundColor: string = "#000000";
 
 
-    public constructor(idArg: string, labelArg: string, metricsArg: Metrics, backgroundColorArg: string=ColorUtils.randomHexColor(), foregroundColorArg: string='#000000') {
-        this.id = idArg;
-        this.label = labelArg;
-        this.metrics = metricsArg;
-        this.backgroundColor = backgroundColorArg;
-        this.foregroundColor = foregroundColorArg;
+    public constructor() {
     }
 
 
+
+    public static create(idArg: string, 
+                         labelArg: string, 
+                         metricsArg: Metrics, 
+                         backgroundColorArg: string=ColorUtils.randomHexColor(), 
+                         foregroundColorArg: string='#000000'): Shape {
+        let returnShape: Shape = new Shape();
+        returnShape.id = idArg;
+        returnShape.label = labelArg;
+        returnShape.metrics = metricsArg;
+        returnShape.backgroundColor = backgroundColorArg;
+        returnShape.foregroundColor = foregroundColorArg;
+        return returnShape;
+    }
+
+
+
     public clone(): Shape {
-        return new Shape(this.id, this.label, this.metrics.clone(), this.backgroundColor, this.foregroundColor);
+        return Shape.create(this.id, this.label, this.metrics.clone(), this.backgroundColor, this.foregroundColor);
     }
 }

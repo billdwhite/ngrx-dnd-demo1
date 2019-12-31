@@ -1,6 +1,8 @@
 <div class="content">
 
-  <div class="diagram">
+  <button class="button" (click)="handleClickAddShape(event$)">Add Shape</button>
+
+  <div #diagram class="diagram">
 
     <ng-container *ngFor="let shape of shapes$ | async; trackBy: shapeTrackBy">
 

@@ -15,7 +15,20 @@ export class DemoEffects {
 
 
     @Effect()
-    updateRoadmap: Observable<Action> = this.actions.pipe(
+    addShape: Observable<Action> = this.actions.pipe(
+        ofType<DemoActions.AddShape>(DemoActions.ADD_SHAPE),
+        map((action): DemoActions.AddShapeSuccess => {
+            return new DemoActions.AddShapeSuccess(action.payload);
+        }),
+        catchError((err) => {
+            return of(new DemoActions.AddShapeError(err));
+        })
+    )
+
+    
+
+    @Effect()
+    updateShape: Observable<Action> = this.actions.pipe(
         ofType<DemoActions.UpdateShape>(DemoActions.UPDATE_SHAPE),
         map((action): DemoActions.UpdateShapeSuccess => {
             return new DemoActions.UpdateShapeSuccess(action.payload);
