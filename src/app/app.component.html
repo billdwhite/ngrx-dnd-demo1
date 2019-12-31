@@ -1,0 +1,19 @@
+<div class="content">
+
+  <div class="diagram">
+
+    <ng-container *ngFor="let shape of shapes$ | async; trackBy: shapeTrackBy">
+
+        <div class="shape"
+             [style.width.px]="shape.metrics.width"
+             [style.height.px]="shape.metrics.height"
+             [style.left.px]="shape.metrics.x"
+             [style.top.px]="shape.metrics.y">
+             {{shape.label}}
+        </div>
+
+    </ng-container>
+
+  </div>
+
+</div>
