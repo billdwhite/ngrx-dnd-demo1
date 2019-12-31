@@ -10,23 +10,6 @@
 }
 
 
-.diagram {
-    width: 700px;
-    height: 700px;
-    background-color: #f3f3f3;
-    display: block;
-    position: relative;
-    border: 1px solid black;
-    border-radius: 3px;
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 auto;
-    padding: 5px;
-}
-
 .button {
     display: flex;
     flex: 0 0 auto;
@@ -35,12 +18,33 @@
     margin: 5px 0;
 }
 
+
+.diagram {
+    background-color: #f3f3f3;
+    display: block;
+    position: relative;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 1px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+}
+
 .shape {
     background-color: red;
     position: absolute;
     user-select: none;
-    padding: 5px;
     border: 1px solid black;
     border-radius: 3px;
     cursor: move;
+}
+
+.label {
+    padding: 5px;
+    pointer-events: none;
+    user-select: none;
 }

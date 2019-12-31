@@ -2,7 +2,11 @@
 
   <button class="button" (click)="handleClickAddShape(event$)">Add Shape</button>
 
-  <div #diagram class="diagram">
+  <div #diagram class="diagram"
+       [style.left.px]="diagramX"
+       [style.top.px]="diagramY"
+       [style.width.px]="diagramWidth"
+       [style.height.px]="diagramHeight">
 
     <ng-container *ngFor="let shape of shapes$ | async; trackBy: shapeTrackBy">
 
@@ -16,7 +20,7 @@
              [style.color]="shape.foregroundColor"
              
              (mousedown)="handleMouseDown(shape, $event)">
-             {{shape.label}}
+             <div class="label">{{shape.label}}</div>
         </div>
 
     </ng-container>

@@ -18,6 +18,10 @@ export class AppComponent implements OnInit {
     @ViewChild('diagram', {static: true}) diagram: ElementRef;
 
     public shapes$: Observable<Shape[]>;
+    public diagramX: number = 0;
+    public diagramY: number = 0;
+    public diagramWidth: number = 700;
+    public diagramHeight: number = 700;
 
 
     constructor(public store: Store<DemoStore.DemoState>,
@@ -55,6 +59,14 @@ export class AppComponent implements OnInit {
 
 
     public handleMouseDown(mouseShape: Shape, mouseEvent: MouseEvent): void {
+        // set drag limits 
+        let boundingBox: {x: number, y: number, width: number, height: number} = {
+            x: this.diagramX, 
+            y: this.diagramY, 
+            width: this.diagramWidth - mouseShape.metrics.width, 
+            height: this.diagramHeight - mouseShape.metrics.height
+        };
+
         // reparent div to bring it to the top
         this.renderer.appendChild(this.diagram.nativeElement, mouseEvent.target);
         // get the offset of the mouse within the shape to drag it cleanly
@@ -64,16 +76,30 @@ export class AppComponent implements OnInit {
         let mouseMoveListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mousemove", (mouseMoveEvent: MouseEvent) => {
             let updatedShape: Shape = mouseShape.clone()
             let updatedMetrics: Metrics = mouseShape.metrics.clone()
-            updatedMetrics.x = mouseMoveEvent.x - offsetX;
-            updatedMetrics.y = mouseMoveEvent.y - offsetY;
+            let updatedX: number = Math.max(boundingBox.x, Math.min(mouseMoveEvent.x - offsetX, boundingBox.width))
+            let updatedY: number = Math.max(boundingBox.y, Math.min(mouseMoveEvent.y - offsetY, boundingBox.height))
+            updatedMetrics.x = updatedX;
+            updatedMetrics.y = updatedY;
             updatedShape.metrics = updatedMetrics;
             // HERE IS THE MAGIC
-            this.store.dispatch(new DemoActions.UpdateShape(updatedShape))
+            this.store.dispatch(new DemoActions.UpdateShape(updatedShape));
+            console.log("move = " + mouseShape.id);
         });
 
-        let mouseupListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mouseup", (mouseUpEvent: MouseEvent) => {
-            mouseMoveListener();
-            mouseupListener();
+        let killListeners: Function;
+
+        let mouseUpListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mouseup", (mouseUpEvent: MouseEvent) => {
+            killListeners();
         });
+
+        let mouseLeaveListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mouseleave", (mouseUpEvent: MouseEvent) => {
+            killListeners();
+        });
+
+        killListeners = () => {
+            mouseMoveListener();
+            mouseUpListener();
+            mouseLeaveListener();
+        };
     }
 }
