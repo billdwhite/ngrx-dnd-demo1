@@ -20,6 +20,6 @@ export class Shape {
 
 
     public clone(): Shape {
-        return new Shape(this.id, this.label, this.metrics.clone());
+        return new Shape(this.id, this.label, this.metrics.clone(), this.backgroundColor, this.foregroundColor);
     }
 }

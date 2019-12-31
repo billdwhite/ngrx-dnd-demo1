@@ -5,12 +5,15 @@
     <ng-container *ngFor="let shape of shapes$ | async; trackBy: shapeTrackBy">
 
         <div class="shape"
+
              [style.width.px]="shape.metrics.width"
              [style.height.px]="shape.metrics.height"
              [style.left.px]="shape.metrics.x"
              [style.top.px]="shape.metrics.y"
              [style.background-color]="shape.backgroundColor"
-             [style.color]="shape.foregroundColor">
+             [style.color]="shape.foregroundColor"
+             
+             (mousedown)="handleMouseDown(shape, $event)">
              {{shape.label}}
         </div>
 
