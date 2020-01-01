@@ -1,5 +1,5 @@
-import * as DemoActions from '../actions/demo.actions';
-import {InitialDemoState, DemoState} from '../states/demo.state';
+import * as DemoActions from './demo.actions';
+import {InitialDemoState, DemoState} from './demo.state';
 import {Shape} from '../../model';
 import produce from 'immer';
 

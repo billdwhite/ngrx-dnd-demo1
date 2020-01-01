@@ -1,5 +1,5 @@
 import {createFeatureSelector, createSelector, MemoizedSelector} from '@ngrx/store';
-import {State, DemoState} from '../states';
+import {DemoState} from './demo.state';
 import {Shape} from '../../model';
 
 const getDemoState: MemoizedSelector<object, DemoState>  = createFeatureSelector<DemoState>('demo');

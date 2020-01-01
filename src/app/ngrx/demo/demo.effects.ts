@@ -3,7 +3,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import * as DemoActions from '../actions/demo.actions';
+import * as DemoActions from './demo.actions';
 
 
 @Injectable()

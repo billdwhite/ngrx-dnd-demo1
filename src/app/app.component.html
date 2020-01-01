@@ -1,6 +1,7 @@
 <div class="content">
 
-  <button class="button" (click)="handleClickAddShape(event$)">Add Shape</button>
+  <button class="button" (click)="handleClickAddShape($event)">Add Shape</button>
+  <button class="button" (click)="handleClickUndo($event)">Undo</button>
 
   <div #diagram class="diagram"
        [style.left.px]="diagramX"
