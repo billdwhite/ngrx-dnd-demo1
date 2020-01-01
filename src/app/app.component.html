@@ -1,62 +1,79 @@
 <div class="content">
+    <div class="buttons">
+        <button class="button" (click)="handleClickAddShape($event)">
+            Add Shape
+        </button>
+        <button
+            [disabled]="undoHandler == null"
+            class="button"
+            (click)="handleClickUndo($event)"
+        >
+            Undo Move
+        </button>
+    </div>
 
-  <div class="buttons">
-    <button class="button" (click)="handleClickAddShape($event)">Add Shape</button>
-    <button [disabled]="undoHandler == null" 
-            class="button" 
-            (click)="handleClickUndo($event)">Undo Move</button>
-  </div>
+    <div class="note">When a shape is moved, the mouse is not actually doing the moving! The shape's position is updated by the NGRX store!</div>
 
-  <div class="diagram-container">
-  <div #diagram class="diagram"
-       [style.left.px]="diagramX"
-       [style.top.px]="diagramY"
-       [style.width.px]="diagramWidth"
-       [style.height.px]="diagramHeight">
-
-    <ng-container *ngFor="let shape of shapes$ | async; trackBy: shapeTrackBy">
-
-        <div class="shape"
-
-             [style.width.px]="shape.metrics.width"
-             [style.height.px]="shape.metrics.height"
-             [style.left.px]="shape.metrics.x"
-             [style.top.px]="shape.metrics.y"
-             [style.background-color]="shape.backgroundColor"
-             [style.color]="shape.foregroundColor"
-             
-             (mousedown)="handleMouseDown(shape, $event)">
-             <div class="label">{{shape.label}}</div>
+    <div class="diagram-container">
+        <div
+            #diagram
+            class="diagram"
+            [style.left.px]="diagramX"
+            [style.top.px]="diagramY"
+            [style.width.px]="diagramWidth"
+            [style.height.px]="diagramHeight"
+        >
+            <ng-container
+                *ngFor="let shape of shapes$ | async; trackBy: shapeTrackBy"
+            >
+                <div
+                    class="shape"
+                    [style.width.px]="shape.metrics.width"
+                    [style.height.px]="shape.metrics.height"
+                    [style.left.px]="shape.metrics.x"
+                    [style.top.px]="shape.metrics.y"
+                    [style.background-color]="shape.backgroundColor"
+                    [style.color]="shape.foregroundColor"
+                    (mousedown)="handleMouseDown(shape, $event)"
+                >
+                    <div class="label">{{ shape.label }}</div>
+                </div>
+            </ng-container>
         </div>
 
-    </ng-container>
-
-  </div>
-
-
-  <div class="store-info">
-    <div class="title">Store - Selected Shape</div>
-    <div class="row">
-      <div class="label">id:</div>
-      <div class="value">{{(selectedShape$ | async)?.id}}</div>
+        <div class="store-info">
+            <div class="title">NGRX Store - Selected Shape</div>
+            <div class="row">
+                <div class="label">id:</div>
+                <div class="value">{{ (selectedShape$ | async)?.id }}</div>
+            </div>
+            <div class="row">
+                <div class="label">label:</div>
+                <div class="value">{{ (selectedShape$ | async)?.label }}</div>
+            </div>
+            <div class="row">
+                <div class="label">x:</div>
+                <div class="value">
+                    {{ (selectedShape$ | async)?.metrics.x }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">y:</div>
+                <div class="value">
+                    {{ (selectedShape$ | async)?.metrics.y }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">color:</div>
+                <div class="value">
+                    <div
+                        class="swatch"
+                        [style.backgroundColor]="
+                            (selectedShape$ | async)?.backgroundColor
+                        "
+                    ></div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-      <div class="label">label:</div>
-      <div class="value">{{(selectedShape$ | async)?.label}}</div>
-    </div>
-    <div class="row">
-      <div class="label">x:</div>
-      <div class="value">{{(selectedShape$ | async)?.metrics.x}}</div>
-    </div>
-    <div class="row">
-      <div class="label">y:</div>
-      <div class="value">{{(selectedShape$ | async)?.metrics.y}}</div>
-    </div>
-    <div class="row">
-      <div class="label">color:</div>
-      <div class="value"><div class="swatch" [style.backgroundColor]="(selectedShape$ | async)?.backgroundColor"></div></div>
-    </div>
-  </div>
-</div>
-
 </div>

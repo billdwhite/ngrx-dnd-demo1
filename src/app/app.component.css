@@ -7,6 +7,17 @@
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    display: flex;
+}
+
+.note {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    font-weight: bold;
+    color: blue;
+    font-style: italic;
+    padding: 5px;;
 }
 
 .buttons {
@@ -45,7 +56,7 @@
 .content {
     display: flex;
     flex-direction: column;
-    flex: 0 0 auto;
+    flex: 0 0 700px;
 }
 
 .shape {
@@ -65,7 +76,7 @@
 
 .store-info {
     display: flex;
-    flex: 0 0 170px;
+    flex: 0 0 180px;
     height: 225px;
     flex-direction: column;
     background-color: #EEEEEE;
