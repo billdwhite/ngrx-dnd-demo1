@@ -6,6 +6,7 @@ import { take, distinctUntilChanged, tap, withLatestFrom, map } from 'rxjs/opera
 import { Shape, Metrics } from './model';
 import * as DemoActions from './store/actions';
 import { Utils } from './utils';
+import {undo} from "ngrx-undo";
 
 @Component({
     selector: 'app-root',
@@ -22,6 +23,8 @@ export class AppComponent implements OnInit {
     public diagramY: number = 0;
     public diagramWidth: number = 700;
     public diagramHeight: number = 700;
+
+    private undoHandler: Function;
 
 
     constructor(public store: Store<DemoStore.DemoState>,
@@ -58,6 +61,15 @@ export class AppComponent implements OnInit {
 
 
 
+    public handleClickUndo(event: Event): void {
+        if (this.undoHandler) {
+            console.log("undo");
+            this.undoHandler();
+        }
+    }
+
+
+
     public handleMouseDown(mouseShape: Shape, mouseEvent: MouseEvent): void {
         // set drag limits 
         let boundingBox: {x: number, y: number, width: number, height: number} = {
@@ -69,30 +81,24 @@ export class AppComponent implements OnInit {
 
         // reparent div to bring it to the top
         this.renderer.appendChild(this.diagram.nativeElement, mouseEvent.target);
+        
         // get the offset of the mouse within the shape to drag it cleanly
         let offsetX: number = mouseEvent.x - mouseShape.metrics.x;
         let offsetY: number = mouseEvent.y - mouseShape.metrics.y;
         // listener to move shape
         let mouseMoveListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mousemove", (mouseMoveEvent: MouseEvent) => {
-            let updatedShape: Shape = mouseShape.clone()
-            let updatedMetrics: Metrics = mouseShape.metrics.clone()
-            let updatedX: number = Math.max(boundingBox.x, Math.min(mouseMoveEvent.x - offsetX, boundingBox.width))
-            let updatedY: number = Math.max(boundingBox.y, Math.min(mouseMoveEvent.y - offsetY, boundingBox.height))
-            updatedMetrics.x = updatedX;
-            updatedMetrics.y = updatedY;
-            updatedShape.metrics = updatedMetrics;
-            // HERE IS THE MAGIC
-            this.store.dispatch(new DemoActions.UpdateShape(updatedShape));
-            console.log("move = " + mouseShape.id);
+            this.updateShape(mouseShape, mouseMoveEvent, offsetX, offsetY, boundingBox, true);
         });
 
         let killListeners: Function;
 
         let mouseUpListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mouseup", (mouseUpEvent: MouseEvent) => {
+            //this.updateShape(mouseShape, mouseUpEvent, offsetX, offsetY, boundingBox, false);
             killListeners();
         });
 
         let mouseLeaveListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mouseleave", (mouseUpEvent: MouseEvent) => {
+            //this.updateShape(mouseShape, mouseUpEvent, offsetX, offsetY, boundingBox, false);
             killListeners();
         });
 
@@ -101,5 +107,39 @@ export class AppComponent implements OnInit {
             mouseUpListener();
             mouseLeaveListener();
         };
+
+        this.updateShape(mouseShape, mouseEvent, offsetX, offsetY, boundingBox, true);
+    }
+
+
+
+    public updateShape(mouseShape: Shape, 
+                       mouseMoveEvent: MouseEvent, 
+                       offsetX: number, 
+                       offsetY: number, 
+                       boundingBox: {x: number, y: number, width: number, height: number},
+                       allowUndo: boolean=false): void {
+        let updatedShape: Shape = mouseShape.clone()
+        let updatedMetrics: Metrics = mouseShape.metrics.clone()
+        let updatedX: number = Math.max(boundingBox.x, Math.min(mouseMoveEvent.x - offsetX, boundingBox.width))
+        let updatedY: number = Math.max(boundingBox.y, Math.min(mouseMoveEvent.y - offsetY, boundingBox.height))
+        updatedMetrics.x = updatedX;
+        updatedMetrics.y = updatedY;
+        updatedShape.metrics = updatedMetrics;
+
+        let updateAction: Action = new DemoActions.UpdateShape(updatedShape);
+
+        if (allowUndo) {
+            this.undoHandler = () => {
+                /*this.store.dispatch({
+                    type: 'ngrx-undo/UNDO_ACTION',
+                    payload: updateAction
+                })*/
+                this.store.dispatch(undo(updateAction));
+            }
+        }
+
+        // HERE IS THE MAGIC
+        this.store.dispatch(updateAction);
     }
 }
