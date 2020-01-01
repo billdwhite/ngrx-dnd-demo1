@@ -9,13 +9,18 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.buttons {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+}
 
 .button {
     display: flex;
     flex: 0 0 auto;
     width: 150px;
     height: 30px;
-    margin: 5px 0;
+    margin: 5px 5px 5px 0;
 }
 
 

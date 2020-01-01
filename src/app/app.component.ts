@@ -22,8 +22,7 @@ export class AppComponent implements OnInit {
     public diagramY: number = 0;
     public diagramWidth: number = 700;
     public diagramHeight: number = 700;
-
-    private undoHandler: Function;
+    public undoHandler: Function;
 
 
     constructor(public store: Store<DemoStore.DemoState>,
