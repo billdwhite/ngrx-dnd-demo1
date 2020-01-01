@@ -6,7 +6,6 @@ import { take, distinctUntilChanged, tap, withLatestFrom, map } from 'rxjs/opera
 import { Shape, Metrics } from './model';
 import * as DemoActions from './store/actions';
 import { Utils } from './utils';
-import {undo} from "ngrx-undo";
 
 @Component({
     selector: 'app-root',
@@ -30,7 +29,6 @@ export class AppComponent implements OnInit {
     constructor(public store: Store<DemoStore.DemoState>,
         private renderer: Renderer,
         private elementRef: ElementRef) {
-
     }
 
 
@@ -65,6 +63,7 @@ export class AppComponent implements OnInit {
         if (this.undoHandler) {
             console.log("undo");
             this.undoHandler();
+            this.undoHandler = null;
         }
     }
 
@@ -87,18 +86,18 @@ export class AppComponent implements OnInit {
         let offsetY: number = mouseEvent.y - mouseShape.metrics.y;
         // listener to move shape
         let mouseMoveListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mousemove", (mouseMoveEvent: MouseEvent) => {
-            this.updateShape(mouseShape, mouseMoveEvent, offsetX, offsetY, boundingBox, true);
+            this.updateShape(mouseShape, mouseMoveEvent, offsetX, offsetY, boundingBox, false);
         });
 
         let killListeners: Function;
 
         let mouseUpListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mouseup", (mouseUpEvent: MouseEvent) => {
-            //this.updateShape(mouseShape, mouseUpEvent, offsetX, offsetY, boundingBox, false);
+            this.updateShape(mouseShape, mouseUpEvent, offsetX, offsetY, boundingBox, false);
             killListeners();
         });
 
         let mouseLeaveListener: Function = this.renderer.listen(this.elementRef.nativeElement, "mouseleave", (mouseUpEvent: MouseEvent) => {
-            //this.updateShape(mouseShape, mouseUpEvent, offsetX, offsetY, boundingBox, false);
+            this.updateShape(mouseShape, mouseUpEvent, offsetX, offsetY, boundingBox, false);
             killListeners();
         });
 
@@ -131,11 +130,7 @@ export class AppComponent implements OnInit {
 
         if (allowUndo) {
             this.undoHandler = () => {
-                /*this.store.dispatch({
-                    type: 'ngrx-undo/UNDO_ACTION',
-                    payload: updateAction
-                })*/
-                this.store.dispatch(undo(updateAction));
+                this.store.dispatch(updateAction);
             }
         }
 

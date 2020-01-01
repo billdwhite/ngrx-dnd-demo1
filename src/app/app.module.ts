@@ -7,9 +7,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './store/reducers';
 import { DemoEffects } from './store/effects';
-import {handleUndo, configureBufferSize} from 'ngrx-undo';
-
-configureBufferSize(150);
 
 @NgModule({
     declarations: [
@@ -19,8 +16,7 @@ configureBufferSize(150);
         BrowserModule,
         // ngrx modules
         StoreModule.forRoot(
-            reducers,
-            {metaReducers: [handleUndo]}
+            reducers
         ),
         EffectsModule.forRoot([
             DemoEffects
