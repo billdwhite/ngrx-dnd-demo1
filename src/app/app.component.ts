@@ -18,10 +18,12 @@ export class AppComponent implements OnInit {
     @ViewChild('diagram', {static: true}) diagram: ElementRef;
 
     public shapes$: Observable<Shape[]>;
+    public selectedShape$: Observable<Shape>;
+
     public diagramX: number = 0;
     public diagramY: number = 0;
-    public diagramWidth: number = 700;
-    public diagramHeight: number = 700;
+    public diagramWidth: number = 500;
+    public diagramHeight: number = 400;
     public undoHandler: Function;
 
 
@@ -33,7 +35,9 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.shapes$ = this.store.pipe(select(DemoStore.getShapes));
+        this.selectedShape$ = this.store.pipe(select(DemoStore.getSelectedShape));
     }
+
 
 
     public shapeTrackBy(index: number, shape: Shape): string {
@@ -44,13 +48,13 @@ export class AppComponent implements OnInit {
 
     public handleClickAddShape(event: Event): void {
         let newShape: Shape = Shape.create(
-            Utils.random4(),
+            'shape_' + Utils.random4(),
             'New Shape',
             Metrics.create(
-                Utils.randomNumberBetween(1, 500),
-                Utils.randomNumberBetween(1, 500),
-                Utils.randomNumberBetween(150, 300),
-                Utils.randomNumberBetween(50, 200)
+                Utils.randomNumberBetween(1, 300),
+                Utils.randomNumberBetween(1, 300),
+                Utils.randomNumberBetween(150, 200),
+                Utils.randomNumberBetween(50, 100)
             )
         );
         this.store.dispatch(new DemoStore.AddShape(newShape));
@@ -69,6 +73,7 @@ export class AppComponent implements OnInit {
 
 
     public handleMouseDown(mouseShape: Shape, mouseEvent: MouseEvent): void {
+        this.store.dispatch(new DemoActions.SelectShape(mouseShape));
         // set drag limits 
         let boundingBox: {x: number, y: number, width: number, height: number} = {
             x: this.diagramX, 
@@ -121,8 +126,8 @@ export class AppComponent implements OnInit {
         let updatedMetrics: Metrics = mouseShape.metrics.clone()
         let updatedX: number = Math.max(boundingBox.x, Math.min(mouseMoveEvent.x - offsetX, boundingBox.width))
         let updatedY: number = Math.max(boundingBox.y, Math.min(mouseMoveEvent.y - offsetY, boundingBox.height))
-        updatedMetrics.x = updatedX;
-        updatedMetrics.y = updatedY;
+        updatedMetrics.x = Utils.round(updatedX, 0);
+        updatedMetrics.y = Utils.round(updatedY, 0);
         updatedShape.metrics = updatedMetrics;
 
         let updateAction: Action = new DemoActions.UpdateShape(updatedShape);

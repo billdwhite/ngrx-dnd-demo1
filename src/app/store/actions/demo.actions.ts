@@ -9,6 +9,10 @@ export const UPDATE_SHAPE           : string = '[Demo] UPDATE_SHAPE';
 export const UPDATE_SHAPE_SUCCESS   : string = '[Demo] UPDATE_SHAPE_SUCCESS';
 export const UPDATE_SHAPE_ERROR     : string = '[Demo] UPDATE_SHAPE_ERROR';
 
+export const SELECT_SHAPE           : string = '[Demo] SELECT_SHAPE';
+export const SELECT_SHAPE_SUCCESS   : string = '[Demo] SELECT_SHAPE_SUCCESS';
+export const SELECT_SHAPE_ERROR     : string = '[Demo] SELECT_SHAPE_ERROR';
+
 
 
 export class AddShape implements Action {
@@ -41,5 +45,21 @@ export class UpdateShapeError implements Action {
 
 
 
+export class SelectShape implements Action {
+    readonly type = SELECT_SHAPE;
+    constructor(public payload: Shape) {}
+}
+export class SelectShapeSuccess implements Action {
+    readonly type = SELECT_SHAPE_SUCCESS;
+    constructor(public payload: Shape) {}
+}
+export class SelectShapeError implements Action {
+    readonly type = SELECT_SHAPE_ERROR;
+    constructor(public payload: string) {}
+}
+
+
+
 export type DemoActionsAll =  AddShape | AddShapeSuccess | AddShapeError 
-                              | UpdateShape | UpdateShapeSuccess | UpdateShapeError;
+                              | UpdateShape | UpdateShapeSuccess | UpdateShapeError
+                              | SelectShape | SelectShapeSuccess | SelectShapeError;

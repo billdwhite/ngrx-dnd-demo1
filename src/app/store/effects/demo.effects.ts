@@ -37,4 +37,17 @@ export class DemoEffects {
             return of(new DemoActions.UpdateShapeError(err));
         })
     )
+
+    
+
+    @Effect()
+    selectedShape: Observable<Action> = this.actions.pipe(
+        ofType<DemoActions.SelectShape>(DemoActions.SELECT_SHAPE),
+        map((action): DemoActions.SelectShapeSuccess => {
+            return new DemoActions.SelectShapeSuccess(action.payload);
+        }),
+        catchError((err) => {
+            return of(new DemoActions.SelectShapeError(err));
+        })
+    )
 }

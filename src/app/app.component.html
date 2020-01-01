@@ -4,9 +4,10 @@
     <button class="button" (click)="handleClickAddShape($event)">Add Shape</button>
     <button [disabled]="undoHandler == null" 
             class="button" 
-            (click)="handleClickUndo($event)">Undo</button>
+            (click)="handleClickUndo($event)">Undo Move</button>
   </div>
 
+  <div class="diagram-container">
   <div #diagram class="diagram"
        [style.left.px]="diagramX"
        [style.top.px]="diagramY"
@@ -31,5 +32,31 @@
     </ng-container>
 
   </div>
+
+
+  <div class="store-info">
+    <div class="title">Store - Selected Shape</div>
+    <div class="row">
+      <div class="label">id:</div>
+      <div class="value">{{(selectedShape$ | async)?.id}}</div>
+    </div>
+    <div class="row">
+      <div class="label">label:</div>
+      <div class="value">{{(selectedShape$ | async)?.label}}</div>
+    </div>
+    <div class="row">
+      <div class="label">x:</div>
+      <div class="value">{{(selectedShape$ | async)?.metrics.x}}</div>
+    </div>
+    <div class="row">
+      <div class="label">y:</div>
+      <div class="value">{{(selectedShape$ | async)?.metrics.y}}</div>
+    </div>
+    <div class="row">
+      <div class="label">color:</div>
+      <div class="value"><div class="swatch" [style.backgroundColor]="(selectedShape$ | async)?.backgroundColor"></div></div>
+    </div>
+  </div>
+</div>
 
 </div>

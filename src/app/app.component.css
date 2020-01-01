@@ -18,20 +18,29 @@
 .button {
     display: flex;
     flex: 0 0 auto;
-    width: 150px;
+    width: 75px;
     height: 30px;
     margin: 5px 5px 5px 0;
+    justify-content: center;
 }
 
+.diagram-container {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+}
 
 .diagram {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
     background-color: #f3f3f3;
-    display: block;
     position: relative;
     border: 1px solid black;
     border-radius: 3px;
     padding: 1px;
 }
+
 
 .content {
     display: flex;
@@ -52,4 +61,54 @@
     padding: 5px;
     pointer-events: none;
     user-select: none;
+}
+
+.store-info {
+    display: flex;
+    flex: 0 0 170px;
+    height: 225px;
+    flex-direction: column;
+    background-color: #EEEEEE;
+    position: relative;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 1px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 auto;
+    height: 45px;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 auto;
+    height: 32px;
+    border-top: 1px solid #999999;
+    align-items: center;
+}
+
+.row .label {
+    display: flex;
+    flex: 0 0 80px;
+}
+
+.row .value {
+    display: flex;
+    flex: 1 1 auto;
+    font-weight: bold;
+    color: blue
+}
+
+.row .swatch {
+    width: 16px;
+    height: 16px;
 }

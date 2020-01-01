@@ -48,6 +48,20 @@ export function reducer(state: DemoState=initialDemoState, action: DemoActions.D
                 case DemoActions.UPDATE_SHAPE_ERROR: {
                     break;
                 }
+
+                
+
+                case DemoActions.SELECT_SHAPE: {
+                    break;
+                }
+                case DemoActions.SELECT_SHAPE_SUCCESS: {
+                    const selectedShape: Shape = (<DemoActions.SelectShapeSuccess>action).payload;
+                    draft.selectedShapeId = selectedShape ? selectedShape.id : null;
+                    break;
+                }
+                case DemoActions.SELECT_SHAPE_ERROR: {
+                    break;
+                }
             }
 
             return draft;

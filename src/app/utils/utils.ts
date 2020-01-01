@@ -12,4 +12,11 @@ export class Utils {
             .toString(16)
             .substring(1) + '';
     }
+
+
+
+    public static round(valueArg: number, precisionArg: number=0): number {
+        const f: number = Math.pow(10, precisionArg || 0);
+        return Math.round(valueArg * f) / f;
+    }
 }

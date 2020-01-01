@@ -17,8 +17,8 @@ export const getShapeEntities = createSelector(
 
 export const getShapes = createSelector(
     getShapeEntities,
-    (stateEntities: {[id: string]: Shape}): Shape[] => {
-        return stateEntities ? Object.values(stateEntities) : [];
+    (shapeEntities: {[id: string]: Shape}): Shape[] => {
+        return shapeEntities ? Object.values(shapeEntities) : [];
     }
 );
 
@@ -27,7 +27,28 @@ export const getShapes = createSelector(
 
 export const getShapeForId = (idArg: string) => createSelector(
     getShapeEntities,
-    (stateEntities: {[id: string]: Shape}): Shape => {
-        return stateEntities ? stateEntities[idArg] : null;
+    (shapeEntities: {[id: string]: Shape}): Shape => {
+        return shapeEntities ? shapeEntities[idArg] : null;
+    }
+);
+
+
+
+export const getSelectedShapeId = createSelector(
+    getDemoState,
+    (state: DemoState): string => {
+        return state ? state.selectedShapeId : null;
+    }
+)
+
+
+
+export const getSelectedShape = createSelector(
+    getShapeEntities,
+    getSelectedShapeId,
+    (shapeEntities: {[id: string]: Shape}, selectedId: string): Shape => {
+        return shapeEntities && selectedId 
+               ? shapeEntities[selectedId]
+               : null;
     }
 );
